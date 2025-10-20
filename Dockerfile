@@ -11,6 +11,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose port 8080 to the world
+ENV PORT=8080
 EXPOSE 8080
 
 # Run the application
