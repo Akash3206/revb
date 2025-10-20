@@ -1,6 +1,7 @@
 package com.revb.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,6 @@ public class Link {
     @JsonBackReference
     private Subtopic subtopic;
 
-
     @Column(nullable = false, length = 150)
     private String title;
 
@@ -30,7 +30,9 @@ public class Link {
     @Column(name = "insertion_order")
     private Integer insertionOrder;
 
-    @Column(name = "date_added", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    // ✅ Add JsonFormat so it’s properly serialized in JSON
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date_added", nullable = false, updatable = false)
     private LocalDateTime dateAdded = LocalDateTime.now();
 
     public Link() {}
