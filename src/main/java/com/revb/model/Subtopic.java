@@ -1,10 +1,10 @@
 package com.revb.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -18,14 +18,13 @@ public class Subtopic {
     @Column(nullable = false)
     private String name;
 
-    // ✅ Ensure dates are serialized in human-readable format (same as Link)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    // ✅ Timezone-safe, UTC-based timestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private Instant createdAt = Instant.now();
 
     @ManyToOne
     @JoinColumn(name = "subject_id", nullable = false)
-    @JsonBackReference // Break recursion — child side
+    @JsonBackReference
     private Subject subject;
 
     @OneToMany(mappedBy = "subtopic", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,18 +32,44 @@ public class Subtopic {
     private List<Link> links;
 
     // --- Getters & Setters ---
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Long getId() {
+        return id;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Subject getSubject() { return subject; }
-    public void setSubject(Subject subject) { this.subject = subject; }
+    public String getName() {
+        return name;
+    }
 
-    public List<Link> getLinks() { return links; }
-    public void setLinks(List<Link> links) { this.links = links; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
 }

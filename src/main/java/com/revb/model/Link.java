@@ -1,9 +1,9 @@
 package com.revb.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 
 @Entity
 @Table(name = "links")
@@ -14,7 +14,7 @@ public class Link {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "subtopic_id")
+    @JoinColumn(name = "subtopic_id", nullable = false)
     @JsonBackReference
     private Subtopic subtopic;
 
@@ -30,31 +30,67 @@ public class Link {
     @Column(name = "insertion_order")
     private Integer insertionOrder;
 
-    // ✅ Add JsonFormat so it’s properly serialized in JSON
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    // ✅ Timezone-safe, UTC-based timestamp
     @Column(name = "date_added", nullable = false, updatable = false)
-    private LocalDateTime dateAdded = LocalDateTime.now();
+    private Instant dateAdded = Instant.now();
 
     public Link() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // --- Getters & Setters ---
 
-    public Subtopic getSubtopic() { return subtopic; }
-    public void setSubtopic(Subtopic subtopic) { this.subtopic = subtopic; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public Subtopic getSubtopic() {
+        return subtopic;
+    }
 
-    public String getUrl() { return url; }
-    public void setUrl(String url) { this.url = url; }
+    public void setSubtopic(Subtopic subtopic) {
+        this.subtopic = subtopic;
+    }
 
-    public Integer getInsertionOrder() { return insertionOrder; }
-    public void setInsertionOrder(Integer insertionOrder) { this.insertionOrder = insertionOrder; }
+    public String getTitle() {
+        return title;
+    }
 
-    public LocalDateTime getDateAdded() { return dateAdded; }
-    public void setDateAdded(LocalDateTime dateAdded) { this.dateAdded = dateAdded; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getInsertionOrder() {
+        return insertionOrder;
+    }
+
+    public void setInsertionOrder(Integer insertionOrder) {
+        this.insertionOrder = insertionOrder;
+    }
+
+    public Instant getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Instant dateAdded) {
+        this.dateAdded = dateAdded;
+    }
 }
